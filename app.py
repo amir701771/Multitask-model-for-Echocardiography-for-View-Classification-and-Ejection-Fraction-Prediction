@@ -552,7 +552,6 @@ def get_training_status():
 
 def update_training_status(status_dict):
     """Callback to update global state safely."""
-    global TRAINING_STATE
     TRAINING_STATE.update(status_dict)
 
 @app.route('/api/train-model', methods=['POST'])
@@ -664,8 +663,6 @@ def stop_training():
     """
     Stop the currently running training process gracefully.
     """
-    global TRAINING_STATE
-    
     if TRAINING_STATE['status'] != 'training':
         return jsonify({'success': False, 'message': 'No training is currently running'}), 400
     

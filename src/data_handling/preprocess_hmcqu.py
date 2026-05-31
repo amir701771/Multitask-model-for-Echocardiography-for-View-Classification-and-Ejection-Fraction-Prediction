@@ -178,7 +178,7 @@ def preprocess_data(config):
                     elif not frame_loaded: error_count += 1; failed_base_ids.add(base_id)
 
                 except Exception as process_e:
-                     logging.error(f"Error processing ID {id_str} (raw file: {raw_video_path}): {process_e}", exc_info=False)
+                     logging.error(f"Error processing ID {id_str} (raw file: {raw_file_path}): {process_e}", exc_info=False)
                      error_count += 1
                      failed_base_ids.add(base_id)
 
