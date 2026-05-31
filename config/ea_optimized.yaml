@@ -1,0 +1,63 @@
+
+dataset_type: echonet
+
+data:
+  dataset_name: "EchonetPseudoMultiTask"
+
+  base_dir: "D:/echonet_multi_task/data/EchoNetDynamic"
+
+  csv_path: "data/FileList_echonet_pseudolabels.csv"
+
+  video_dir: "D:/echonet_multi_task/data/EchoNetDynamic/Videos"
+
+  processed_dir: "processed_data/echonet"
+
+  view_mapping:
+    '2CH': 0
+    '4CH': 1
+  num_views: 2
+
+
+  filename_col: "FileName"
+  ef_col: "EF"
+  view_col: "PredictedView"
+  split_col: "Split"
+
+  frames_per_video: 4
+
+preprocessing:
+
+  img_size: [112, 112]
+
+model:
+  architecture: "cnn_multitask"
+  backbone: "r2plus1d_18"
+  pretrained: true
+  dropout_rate: 0.4
+
+
+training:
+
+  output_dir: "results/multitask_echonet_ea_optimized"
+  device: "cuda"
+  epochs: 10
+  batch_size: 4
+  learning_rate: 0.0001
+  optimizer: "AdamW"
+  scheduler: "StepLR"
+  scheduler_params:
+
+    step_size: 15
+    gamma: 0.1
+
+  loss_alpha: 0.4817
+  loss_beta: 0.2602
+  view_loss_class_weights: [12.26, 0.52]
+
+  monitor_metric: "val_mae"
+  monitor_mode: "min"
+  num_workers: 4
+  seed: 42
+
+visualization:
+  plot_freq: 5

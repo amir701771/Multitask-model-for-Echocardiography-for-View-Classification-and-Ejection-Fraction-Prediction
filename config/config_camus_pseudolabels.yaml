@@ -1,0 +1,24 @@
+
+dataset_type: camus
+
+# --- Data Settings ---
+data:
+
+  processed_dir: "processed_data/camus"
+
+
+  processed_file_glob_pattern: "patient*/*.png"
+
+
+  output_filename_col: "FileName"       # Name for the identifier column (e.g., patient0001_A4C_ED)
+  output_viewlabel_col: "PredictedView" # Name for the predicted view column (e.g., A4C)
+
+
+preprocessing:
+
+  img_size: [128, 128]
+
+# --- Execution Settings ---
+training:
+  device: "cuda"
+  num_workers: 4

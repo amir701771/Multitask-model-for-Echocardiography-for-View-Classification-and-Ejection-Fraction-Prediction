@@ -1,0 +1,54 @@
+
+data:
+
+  dataset_type: camus_view
+
+
+  base_dir: "data/camus" # Relative path example
+
+
+  processed_dir: "processed_data/camus"
+  split_dir: "data/camus/database_split"
+
+  view_mapping:
+    '2CH': 0
+    '4CH': 1
+  num_views: 2
+
+
+  dataset_class: "CamusViewDataset"
+
+
+preprocessing:
+
+  img_size: [128, 128]
+
+
+model:
+  architecture: "cnn_view_classifier"
+  backbone: "resnet18"
+  pretrained: true
+
+
+# Training Configuration
+training:
+
+  output_dir: "results/view_classifier_camus"
+  device: "cuda"
+  epochs: 5
+  batch_size: 32
+  learning_rate: 0.001
+  optimizer: "Adam"
+  scheduler: "ReduceLROnPlateau"
+  scheduler_params:
+    factor: 0.1
+    patience: 5
+
+  monitor_metric: "val_accuracy"
+  monitor_mode: "max"
+  num_workers: 4
+  seed: 42
+
+
+visualization:
+  plot_freq: 5

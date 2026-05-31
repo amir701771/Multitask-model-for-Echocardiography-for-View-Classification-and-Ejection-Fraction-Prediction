@@ -1,0 +1,16 @@
+
+population_size: 25
+num_generations: 10
+
+crossover_probability: 0.7 # Probability of mating two individuals (cxpb)
+mutation_probability: 0.2  # Probability of mutating an individual (mutpb)
+
+
+mu: 25
+lambda_: 25
+
+
+evaluation_split: 'VALIDATE'
+
+
+evaluation_batch_size: 16

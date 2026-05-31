@@ -1,0 +1,23 @@
+
+data:
+  dataset_name: "HMC-QU"
+
+  metadata_base_dir: "data/HMC-QU"
+
+
+  raw_data_root: "data/HMC-QU/videos" # <<< Points to the folder containing A2C/ and A4C/ subfolders
+
+  processed_dir: "processed_data/hmc-qu"
+
+  filename_col: "Unnamed: 0"
+
+# --- Add top-level 'preprocessing' key ---
+preprocessing:
+
+  frame_types: ["ED", "ES"] # Example: Attempt to extract both
+
+  # Target image size [Height, Width] for the saved PNG frames.
+  img_size: [112, 112]
+
+  # Desired output format for the processed frames.
+  output_format: "png"

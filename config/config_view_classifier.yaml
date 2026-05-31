@@ -1,0 +1,55 @@
+
+data:
+  dataset_name: "camus_view"
+
+  base_data_dir: "data/camus"
+
+  processed_dir: "processed_data/camus"
+
+
+  view_mapping:
+    A2C: 0
+    A4C: 1
+  num_views: 2
+
+
+  filename_col: "Unnamed: 0"
+  dataset_class: "CamusViewDataset"
+
+  frames_per_video: 1
+
+  split_ratio: 0.7
+preprocessing:
+  img_size: [112, 112]        # Target frame size [Height, Width]
+
+# Model Configuration
+model:
+  architecture: "cnn_view_classifier"
+  backbone: "resnet18"
+  pretrained: true
+  dropout_rate: 0.3
+
+# Training Configuration
+training:
+  output_dir: "results/view_classifier_camus"
+  device: "cuda"
+  epochs: 10
+  batch_size: 32
+  learning_rate: 0.0001
+  optimizer: "Adam"
+  weight_decay: 1e-5
+  scheduler: "ReduceLROnPlateau"
+  scheduler_params:
+    # For ReduceLROnPlateau
+    factor: 0.2                 # Reduce LR by factor of 5
+    patience: 5
+  # --- Monitoring ---
+  # Monitor a metric robust to imbalance
+  monitor_metric: "val_accuracy"
+  monitor_mode: "max"               # Higher F1 is better
+  num_workers: 4
+  seed: 42
+
+# Visualization
+visualization:
+  plot_freq: 5                  # Frequency to save plots during training

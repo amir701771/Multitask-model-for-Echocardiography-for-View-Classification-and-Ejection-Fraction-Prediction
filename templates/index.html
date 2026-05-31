@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoNet Analysis @amir khan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Fix History Table Overflow */
+        .history-table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .history-table th,
+        .history-table td {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            vertical-align: middle;
+        }
+
+        .history-table th:nth-child(5),
+        .history-table td:nth-child(5) {
+            /* Target EF column */
+            min-width: 120px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Left Sidebar / Branding -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <span>EchoNet<span class="highlight"></span></span>
+            </div>
+            <nav>
+                <a href="#" class="nav-link active" data-section="upload"><i class="fa-solid fa-upload"></i> Upload &
+                    Analyze</a>
+                <a href="#" class="nav-link" data-section="history"><i class="fa-solid fa-database"></i> History</a>
+                <a href="#" class="nav-link" data-section="settings"><i class="fa-solid fa-gear"></i> Settings</a>
+                <a href="/logout" class="nav-link logout-link" style="margin-top: auto; color: #ef4444;"><i
+                        class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </nav>
+            <div class="status-indicator">
+                <span class="dot"></span> System Ready
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>EchoCardiogram Analysis</h1>
+                <p>Upload your ultrasound video sequence for instant view classification and EF Prediction.</p>
+            </header>
+
+            <!-- SECTIONS WRAPPER -->
+            <div id="section-upload" class="section active">
+                <!-- Analysis Result Area (Originally here) -->
+                <div class="result-section" id="result-section" style="display: none;">
+                    <div class="video-preview">
+                        <h3>Uploaded Sequence</h3>
+                        <!-- Added autoplay and loop to ensure it plays -->
+                        <video id="preview-video" controls autoplay loop playsinline></video>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h3>Analysis Report</h3>
+                        <div class="output-content" id="output-content" style="display: none;">
+                            <div class="prediction-item">
+                                <span class="label">Predicted View</span>
+                                <span class="value huge" id="pred-view">--</span>
+                            </div>
+                            <div class="prediction-item">
+                                <span class="label">Confidence Score</span>
+                                <span class="value" id="pred-conf">--</span>
+                            </div>
+
+                            <!-- EF Section -->
+                            <div class="prediction-item" id="ef-container">
+                                <span class="label">Ejection Fraction (EF)</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="value" id="pred-ef">--</span>
+                                    <span id="ef-badge" class="badge-small"
+                                        style="display:none; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 0.85rem;"></span>
+                                </div>
+                            </div>
+
+                            <div class="badge"> Verified</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-history" class="section" style="display: none;">
+                <h2>Analysis History</h2>
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Filename</th>
+                                <th>Prediction</th>
+                                <th>Confidence</th>
+                                <th>EF</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-list">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="section-settings" class="section" style="display: none;">
+                <h2>System Settings</h2>
+                <div class="settings-panel">
+                    <p>Current Model: <strong>MultiTaskCNN (Strict Binary: A2C/A4C)</strong></p>
+                    <p>Inference Device: <strong>Auto (CUDA/CPU)</strong></p>
+                    <p>Capabilities: <strong>View Classification + A4C EF Regression (Clamped 10-95%)</strong></p>
+                </div>
+
+                <!-- Training Panel -->
+                <div class="settings-panel"
+                    style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <h3>Model Training (Admin@amir khan)</h3>
+                    <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px;">
+                        Retrain the view classification and EF regression model on the implementation dataset.
+                        Training runs in the background.
+                    </p>
+
+                    <button id="train-btn" class="browse-btn" onclick="startTraining()"
+                        style="background: var(--primary); width: auto; padding: 10px 20px;">
+                        <i class="fa-solid fa-brain"></i> Start Training
+                    </button>
+                    
+                    <button id="stop-train-btn" class="browse-btn" onclick="stopTraining()"
+                        style="background: #ef4444; width: auto; padding: 10px 20px; display: none; margin-left: 10px;">
+                        <i class="fa-solid fa-stop"></i> Stop Training
+                    </button>
+
+                    <div id="training-status-area"
+                        style="margin-top: 20px; display: none; background: var(--bg-secondary); padding: 15px; border-radius: 8px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span id="train-status-text" style="font-weight: bold;">Initializing...</span>
+                            <span id="train-epoch-text" style="font-family: monospace;">Epoch: -/-</span>
+                        </div>
+
+                        <div class="progress-bar-wrapper" style="height: 8px;">
+                            <div id="train-progress-bar" class="progress-bar" style="width: 0%;"></div>
+                        </div>
+
+                        <div
+                            style="margin-top: 10px; display: flex; gap: 15px; font-size: 0.85em; color: var(--text-muted);">
+                            <span>Loss: <strong id="train-loss">--</strong></span>
+                            <span>Val Acc: <strong id="train-acc">--</strong></span>
+                        </div>
+                        <p id="train-message" style="margin-top: 10px; font-style: italic; font-size: 0.9em;">Waiting
+                            for server...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar / Upload -->
+        <aside class="right-sidebar">
+            <div class="upload-container">
+                <h2>Upload Video</h2>
+
+                <div class="drop-zone" id="drop-zone">
+                    <div class="icon-container">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <p class="drop-text">Drag & Drop</p>
+                    <p class="sub-text">.AVI, .MP4</p>
+                    <button class="browse-btn" onclick="document.getElementById('file-input').click()">Browse</button>
+                    <input type="file" id="file-input" accept="video/avi,video/mp4,video/*" hidden>
+                </div>
+
+                <div class="file-preview-area" id="file-preview-area" style="display: none;">
+                    <div class="file-info">
+                        <i class="fa-regular fa-file-video"></i>
+                        <span id="filename-display">filename.mp4</span>
+                    </div>
+                </div>
+
+                <div class="loader-container" id="loader" style="display: none;">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <p class="status-text">Processing frames & Running EF Inference...</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
