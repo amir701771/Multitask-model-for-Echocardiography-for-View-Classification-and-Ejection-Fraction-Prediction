@@ -11,3 +11,5 @@ seaborn>=0.11.0
 tqdm>=4.60.0
 deap>=1.3.0
 SimpleITK>=2.0.0  # <<< ADD THIS - Often needed for medical formats like CAMUS (.mhd)
+streamlit>=1.22.0
+reportlab>=4.0.0

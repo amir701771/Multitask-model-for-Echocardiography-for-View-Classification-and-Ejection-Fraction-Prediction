@@ -10,9 +10,14 @@ This repository implements a production-grade, multitask joint representation le
 
 ---
 
-## 📄 Abstract
+## 📑 Scientific IEEE Research Paper
 
-Accurate assessment of Left Ventricular Ejection Fraction (LVEF) is vital for diagnosing cardiovascular diseases, yet manual evaluation suffers from significant inter-observer variability and high cognitive load. Furthermore, LVEF estimation is view-dependent, strictly requiring an Apical 4-Chamber (A4C) perspective. In this work, we propose a multitask deep learning framework that integrates view classification and LVEF regression. Using a shared spatiotemporal backbone (R2+1D) and a semi-supervised pseudo-labeling strategy, the model learns shared features that generalize across medical datasets (CAMUS, EchoNet-Dynamic, HMC-QU). Our model achieves a view classification accuracy of **98.2%** and an LVEF estimation Mean Absolute Error (MAE) of **4.12%**, demonstrating that joint multitask representation learning provides regularization that improves regression performance over single-task models.
+We have compiled a complete, publication-ready scientific manuscript detailing our methodology, experiments, and clinical outcomes in standard IEEE format.
+
+📄 **Read the Full Paper**: [IEEE Format Research Paper PDF (Local Link)](file:///d:/Ddrive%20Downloads/final%20project/paper/multitask_echocardiography_paper.pdf)
+
+### Abstract
+Accurate assessment of Left Ventricular Ejection Fraction (LVEF) is vital for diagnosing cardiovascular diseases, yet manual evaluation suffers from significant inter-observer variability. Furthermore, LVEF estimation is view-dependent, strictly requiring an Apical 4-Chamber (A4C) perspective. In this work, we propose a multitask deep learning framework that integrates view classification and LVEF regression. Using a shared spatiotemporal backbone (R2+1D) and a semi-supervised pseudo-labeling strategy, the model learns shared features that generalize across medical datasets (CAMUS, EchoNet-Dynamic, HMC-QU). Our model achieves a view classification accuracy of **98.2%** and an LVEF estimation Mean Absolute Error (MAE) of **4.12%**, demonstrating that joint multitask representation learning provides regularization that improves regression performance over single-task models.
 
 ---
 
@@ -53,25 +58,32 @@ The machine learning pipeline is structured into four distinct stages:
 └─────────────────┘      └───────────────────┘      └──────────────────┘      └──────────────────┘
 ```
 
-1. **Stage 1: Pre-training View Classifier (CAMUS)**:
-   The classifier is pretrained on the fully annotated CAMUS dataset to distinguish between Apical 2-Chamber (A2C) and Apical 4-Chamber (A4C) views.
-   
-2. **Stage 2: Semi-Supervised Pseudo-Labeling (EchoNet-Dynamic)**:
-   The pretrained view classifier is run over the larger, unlabelled EchoNet-Dynamic video dataset, assigning high-confidence view labels (`A2C` or `A4C`) to construct a pseudo-labeled dataset.
-   
-3. **Stage 3: Multitask Joint Representation Learning**:
-   The multitask network shares feature extraction layers, branching into classification and regression heads. The joint loss function balances both targets:
+1. **Stage 1: Pre-training View Classifier (CAMUS)**: Pretrained on the fully annotated CAMUS dataset to distinguish between Apical 2-Chamber (A2C) and Apical 4-Chamber (A4C) views.
+2. **Stage 2: Semi-Supervised Pseudo-Labeling (EchoNet-Dynamic)**: The pretrained classifier is run over the larger, unlabelled EchoNet-Dynamic video dataset, assigning high-confidence view labels (`A2C` or `A4C`).
+3. **Stage 3: Multitask Joint Representation Learning**: The multitask network shares feature extraction layers, branching into classification and regression heads. Joint loss balances both targets:
    $$\mathcal{L}_{\text{total}} = \alpha \cdot \mathcal{L}_{\text{classification}} + \beta \cdot \mathcal{L}_{\text{regression}}$$
-   where $\mathcal{L}_{\text{classification}}$ is Weighted Binary Cross-Entropy (compensating for view imbalance) and $\mathcal{L}_{\text{regression}}$ is Mean Squared Error (MSE) / Mean Absolute Error (MAE).
-   
-4. **Stage 4: Evolutionary Hyperparameter Tuning**:
-   An evolutionary algorithm (implemented via DEAP) optimizes the loss weights ($\alpha, \beta$), learning rates, and weight decays over successive generations to find the Pareto-optimal parameter set.
+4. **Stage 4: Evolutionary Hyperparameter Tuning**: An evolutionary algorithm (using DEAP) optimizes the loss weights ($\alpha, \beta$), learning rates, and weight decays.
 
 ---
 
-## 📊 Experimental Results
+## 📊 Experimental Results & Visualizations
 
-Experiments were conducted comparing single-task configurations against our joint multitask architecture across different backbones:
+We evaluated our joint multitask model against single-task variants. The quantitative results and validation metrics are illustrated below:
+
+### 1. Training Performance & Validation Accuracy
+The joint multitask loss converges rapidly, and the view classification accuracy achieves a stable validation asymptote at **98.2%** on spatiotemporal convolutional backbones.
+
+![Training Curves](file:///d:/Ddrive%20Downloads/final%20project/docs/assets/learning_curves.png)
+
+### 2. Ejection Fraction Correlation
+The scatter plot demonstrates a high correlation ($R^2 = 0.81$) between predicted numerical ejection fraction values and the clinician-established ground truth, yielding a Mean Absolute Error of **4.12%**.
+
+![EF Regression Correlation](file:///d:/Ddrive%20Downloads/final%20project/docs/assets/ef_correlation.png)
+
+### 3. Confusion Matrix
+The confusion matrix demonstrates high diagnostic accuracy for view validation, which prevents calculation of LVEF on misaligned Apical 2-Chamber slices.
+
+![Confusion Matrix](file:///d:/Ddrive%20Downloads/final%20project/docs/assets/confusion_matrix.png)
 
 | Model Configuration | Backbone | View Accuracy (%) | LVEF MAE (%) | LVEF RMSE (%) | LVEF $R^2$ |
 | :--- | :--- | :---: | :---: | :---: | :---: |
@@ -82,9 +94,33 @@ Experiments were conducted comparing single-task configurations against our join
 | Single-Task (LVEF Only) | R2+1D (3D) | - | 4.88% | 6.12% | 0.74 |
 | **Multi-Task (Joint)** | **R2+1D (3D)** | **98.2%** | **4.12%** | **5.11%** | **0.81** |
 
-### Key Observations:
-- **Regularization Effect**: Multitask learning improves LVEF prediction MAE from **4.88%** to **4.12%**, confirming that learning features related to view boundaries helps the model locate cardiac chambers more effectively.
-- **Spatiotemporal Advantage**: The 3D $R(2+1)D$ backbone outperforms 2D ResNet-18 by capturing temporal compression and expansion velocities during the cardiac cycle.
+---
+
+## 🌐 Live Streamlit & Flask Diagnostic Dashboards
+
+This project provides two distinct user interfaces for testing and showcasing model performance.
+
+### Option A: Streamlit Live Demo (One-Click Cloud Deployment Ready)
+A lightweight dashboard optimized for hosting on **Streamlit Cloud** or **HuggingFace Spaces**:
+- Interactive file uploader for AVI/MP4 video files.
+- Selectable preloaded clinical mock patient cases.
+- Real-time gauge metrics, clinical alert boxes, and simulated left ventricular volume curves.
+
+**To run locally**:
+```bash
+streamlit run streamlit_app.py
+```
+
+### Option B: Flask Clinical Production Server
+A database-backed clinical portal featuring:
+- Secure bcrypt user authentication.
+- SQLite history logging of clinical reports.
+- Automated `ffmpeg` video transcoding for web browser compatibility.
+
+**To run locally**:
+```bash
+python app.py
+```
 
 ---
 
@@ -102,29 +138,6 @@ Run our dataset wizard to verify your local folder structure or unpack downloade
 ```bash
 python download_dataset.py
 ```
-
----
-
-## 💻 Interactive Clinical Dashboard (Web UI)
-
-We include a production-ready Flask diagnostic dashboard allowing users to upload echocardiogram videos, view predictions in real-time, and log patients' historical analysis.
-
-### Features:
-- Secure User Authentication (bcrypt password hashing).
-- SQLite Database backend mapping patient histories.
-- Real-time video format conversion (via `ffmpeg`) for in-browser HTML5 playback.
-- Visual confidence indicator (View Classification) and LVEF Category tags (`Normal`, `Mildly Reduced`, `Reduced`).
-
-### How to Run the UI:
-1. Ensure your Conda environment is active:
-   ```bash
-   conda activate multitask-echo
-   ```
-2. Start the Flask server:
-   ```bash
-   python app.py
-   ```
-3. Open `http://127.0.0.1:5000` in your web browser.
 
 ---
 
@@ -152,5 +165,5 @@ python 05_optimize_multitask_model.py
 
 ---
 
-## 📄 License
+## 📝 License
 This repository is licensed under the MIT License - see the [NOTICE.txt](file:///d:/Ddrive%20Downloads/final%20project/NOTICE.txt) file for details.
