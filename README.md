@@ -21,11 +21,12 @@ This repository implements a production-grade, multitask joint representation le
 
 ---
 
-## 📑 Scientific IEEE Research Paper
+## 📑 Scientific IEEE Research Paper (arXiv Ready)
 
-We have compiled a complete, publication-ready scientific manuscript detailing our methodology, experiments, and clinical outcomes in standard IEEE format.
+We have compiled a complete, publication-ready scientific manuscript detailing our methodology, experiments, and clinical outcomes.
 
-📄 **Read the Full Paper**: [IEEE Format Research Paper PDF (Local Link)](file:///d:/Ddrive%20Downloads/final%20project/paper/multitask_echocardiography_paper.pdf)
+- 📄 **Read the Full Paper PDF**: [IEEE Format Research Paper PDF (Local Link)](file:///d:/Ddrive%20Downloads/final%20project/paper/multitask_echocardiography_paper.pdf)
+- 📝 **Overleaf / arXiv LaTeX Source**: [Overleaf-Ready .tex Source File (Local Link)](file:///d:/Ddrive%20Downloads/final%20project/paper/multitask_echocardiography_paper.tex)
 
 ### Abstract
 Accurate assessment of Left Ventricular Ejection Fraction (LVEF) is vital for diagnosing cardiovascular diseases, yet manual evaluation suffers from significant inter-observer variability. Furthermore, LVEF estimation is view-dependent, strictly requiring an Apical 4-Chamber (A4C) perspective. In this work, we propose a multitask deep learning framework that integrates view classification and LVEF regression. Using a shared spatiotemporal backbone (R2+1D) and a semi-supervised pseudo-labeling strategy, the model learns shared features that generalize across medical datasets (CAMUS, EchoNet-Dynamic, HMC-QU). Our model achieves a view classification accuracy of **98.2%** and an LVEF estimation Mean Absolute Error (MAE) of **4.12%**, demonstrating that joint multitask representation learning provides regularization that improves regression performance over single-task models.
@@ -116,6 +117,8 @@ A lightweight dashboard optimized for hosting on **Streamlit Cloud** or **Huggin
 - Interactive file uploader for AVI/MP4 video files.
 - Selectable preloaded clinical mock patient cases.
 - Real-time gauge metrics, clinical alert boxes, and simulated left ventricular volume curves.
+
+📖 **Spaces Setup Guide**: [HuggingFace Spaces Step-by-Step Guide (Local Link)](file:///d:/Ddrive%20Downloads/final%20project/docs/huggingface_deployment.md)
 
 **To run locally**:
 ```bash
