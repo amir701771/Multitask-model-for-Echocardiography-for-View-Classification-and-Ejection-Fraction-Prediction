@@ -85,17 +85,17 @@ We evaluated our joint multitask model against single-task variants. The quantit
 ### 1. Training Performance & Validation Accuracy
 The joint multitask loss converges rapidly, and the view classification accuracy achieves a stable validation asymptote at **98.2%** on spatiotemporal convolutional backbones.
 
-![Training Curves](file:///d:/Ddrive%20Downloads/final%20project/docs/assets/learning_curves.png)
+![Training Curves](https://raw.githubusercontent.com/amir701771/Multitask-model-for-Echocardiography-for-View-Classification-and-Ejection-Fraction-Prediction/main/docs/assets/learning_curves.png)
 
 ### 2. Ejection Fraction Correlation
 The scatter plot demonstrates a high correlation ($R^2 = 0.81$) between predicted numerical ejection fraction values and the clinician-established ground truth, yielding a Mean Absolute Error of **4.12%**.
 
-![EF Regression Correlation](file:///d:/Ddrive%20Downloads/final%20project/docs/assets/ef_correlation.png)
+![EF Regression Correlation](https://raw.githubusercontent.com/amir701771/Multitask-model-for-Echocardiography-for-View-Classification-and-Ejection-Fraction-Prediction/main/docs/assets/ef_correlation.png)
 
 ### 3. Confusion Matrix
 The confusion matrix demonstrates high diagnostic accuracy for view validation, which prevents calculation of LVEF on misaligned Apical 2-Chamber slices.
 
-![Confusion Matrix](file:///d:/Ddrive%20Downloads/final%20project/docs/assets/confusion_matrix.png)
+![Confusion Matrix](https://raw.githubusercontent.com/amir701771/Multitask-model-for-Echocardiography-for-View-Classification-and-Ejection-Fraction-Prediction/main/docs/assets/confusion_matrix.png)
 
 | Model Configuration | Backbone | View Accuracy (%) | LVEF MAE (%) | LVEF RMSE (%) | LVEF $R^2$ |
 | :--- | :--- | :---: | :---: | :---: | :---: |
