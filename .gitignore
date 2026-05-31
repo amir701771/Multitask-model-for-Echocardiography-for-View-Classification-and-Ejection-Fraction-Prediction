@@ -41,6 +41,10 @@ env/
 
 # Dataset & ML directories
 data/
+datasets/
+EchoNet/
+EchoNetDynamic/
+ECHONET-Dynamic/
 processed_data/
 results/
 uploads/
