@@ -1,3 +1,14 @@
+---
+title: Multitask Echocardiography Diagnostic Studio
+emoji: ❤️
+colorFrom: red
+colorTo: blue
+sdk: streamlit
+sdk_version: 1.30.0
+app_file: streamlit_app.py
+pinned: false
+---
+
 # Multitask Spatiotemporal Joint Representation Learning for Echocardiography View Classification and Ejection Fraction Prediction
 
 [![Python Syntax Check](https://github.com/amir701771/Multitask-model-for-Echocardiography-for-View-Classification-and-Ejection-Fraction-Prediction/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/amir701771/Multitask-model-for-Echocardiography-for-View-Classification-and-Ejection-Fraction-Prediction/actions)

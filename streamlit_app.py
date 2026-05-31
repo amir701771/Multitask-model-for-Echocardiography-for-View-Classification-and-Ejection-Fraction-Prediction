@@ -136,9 +136,10 @@ with col_left:
     else:
         uploaded_file = st.file_uploader("Upload video file", type=["mp4", "avi", "mov"])
         if uploaded_file is not None:
-            # Save uploaded file locally
-            temp_path = os.path.join("uploads", uploaded_file.name)
-            os.makedirs("uploads", exist_ok=True)
+            # Save uploaded file locally in a system-agnostic safe temp directory
+            import tempfile
+            temp_dir = tempfile.gettempdir()
+            temp_path = os.path.join(temp_dir, uploaded_file.name)
             with open(temp_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
             selected_video_file = temp_path
