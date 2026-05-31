@@ -142,10 +142,11 @@ python app.py
 
 To remain compliant with the **Stanford AIMI Dataset Policy**, this repository **does not contain any medical datasets or weights**. 
 
-### 1. Download Datasets
+### 1. Download Datasets (Fully Optional)
+All datasets are completely optional. The reproduction pipelines and clinical dashboards can be run independently using either EchoNet-Dynamic (primary) or CAMUS, without any hard dependency on a single dataset.
 - **EchoNet-Dynamic**: [Request access on Stanford AIMI](https://stanfordaimi.azurewebsites.net/datasets/834e1cd1-92f7-4268-9daa-d359198b310a)
 - **CAMUS**: [Creatis Challenge portal](https://www.creatis.insa-lyon.fr/Challenge/camus/)
-- **HMC-QU**: [Download from Kaggle/IEEE](https://www.kaggle.com/datasets/aysendegerli/hmcqu-dataset) (Expected local path: `data/hmcqu/`)
+- **HMC-QU**: [Download on Kaggle](https://www.kaggle.com/datasets/aysendegerli/hmcqu-dataset)
 
 ### 2. Auto-Verification Script
 Run our dataset wizard to verify your local folder structure or unpack downloaded ZIP files directly:
