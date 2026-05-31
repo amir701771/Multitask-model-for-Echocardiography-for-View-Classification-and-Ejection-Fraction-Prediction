@@ -145,7 +145,7 @@ To remain compliant with the **Stanford AIMI Dataset Policy**, this repository *
 ### 1. Download Datasets
 - **EchoNet-Dynamic**: [Request access on Stanford AIMI](https://stanfordaimi.azurewebsites.net/datasets/834e1cd1-92f7-4268-9daa-d359198b310a)
 - **CAMUS**: [Creatis Challenge portal](https://www.creatis.insa-lyon.fr/Challenge/camus/)
-- **HMC-QU**: [Download from Kaggle/IEEE](https://www.kaggle.com/datasets/aysendemir/hmcqu-dataset)
+- **HMC-QU**: [Download from Kaggle/IEEE](https://www.kaggle.com/datasets/aysendegerli/hmcqu-dataset) (Expected local path: `data/hmcqu/`)
 
 ### 2. Auto-Verification Script
 Run our dataset wizard to verify your local folder structure or unpack downloaded ZIP files directly:
